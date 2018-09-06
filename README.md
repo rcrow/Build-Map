@@ -1,4 +1,6 @@
 # Build-Map
+Tested in ArcMap 10.3.1
+
 Written by Ryan Crow
 
 When creating geologic maps we typically build polygons from lines (contacts and faults) and attribute them with label points. This approach has certain advantages (and disadvantages) as polygons never need to be edited; they are just rebuilt. This tool (Build and Symbolize) automates the steps needed to do that rebuilding and resymbolizing. A disadvantage of this approach is that 

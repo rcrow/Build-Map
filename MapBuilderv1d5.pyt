@@ -169,7 +169,8 @@ class BuildAndSymbolize(object):
         if addToMXD:
             arcpy.AddMessage("  Adding / Removing from the MXD")
             mxd = arcpy.mapping.MapDocument("CURRENT")
-            df = arcpy.mapping.ListDataFrames(mxd, "*")[0]
+            df = mxd.activeDataFrame
+            #df = arcpy.mapping.ListDataFrames(mxd, "*")[0]
 
             sourceLayer2 = arcpy.mapping.Layer(selectPolys)
             arcpy.mapping.RemoveLayer(df, sourceLayer2)
@@ -271,7 +272,7 @@ class BuildAndCheck(object):
 
         quad = parameters[2].valueAsText
 
-        layer = r"\\Igswzcwwgsrio\loco\Geology\SDE_Stuff\LayerFilesAndStyles\BuildAndCheckTemplatev2.lyr"
+        layer = r"BuildAndCheckTemplatev2.lyr"
 
         #Outputs
         selectPolys = parameters[3].valueAsText
@@ -339,15 +340,15 @@ class BuildAndCheck(object):
                                    match_option="INTERSECT",
                                    search_radius="",
                                    distance_field_name="")
-        arcpy.MakeFeatureLayer_management(joinPolys, "Symbolized Map")
+        arcpy.MakeFeatureLayer_management(joinPolys, "Build And Check Map")
 
         # Apply symbology from layer
         arcpy.AddMessage("  Symbolizing")
-        arcpy.ApplySymbologyFromLayer_management(in_layer="Symbolized Map",
+        arcpy.ApplySymbologyFromLayer_management(in_layer="Build And Check Map",
                                                  in_symbology_layer=layer)
 
         # Export layer
-        arcpy.SaveToLayerFile_management(in_layer="Symbolized Map",
+        arcpy.SaveToLayerFile_management(in_layer="Build And Check Map",
                                          out_layer=layerOut,
                                          is_relative_path="#",
                                          version="CURRENT")
@@ -356,7 +357,8 @@ class BuildAndCheck(object):
         if addToMXD:
             arcpy.AddMessage("  Adding / Removing from the MXD")
             mxd = arcpy.mapping.MapDocument("CURRENT")
-            df = arcpy.mapping.ListDataFrames(mxd, "*")[0]
+            df = mxd.activeDataFrame
+            #df = arcpy.mapping.ListDataFrames(mxd, "*")[0]
 
             sourceLayer2 = arcpy.mapping.Layer(selectPolys)
             arcpy.mapping.RemoveLayer(df, sourceLayer2)
@@ -364,7 +366,7 @@ class BuildAndCheck(object):
             sourceLayer1 = arcpy.mapping.Layer(polys)
             arcpy.mapping.RemoveLayer(df, sourceLayer1)
 
-            sourceLayer3 = arcpy.mapping.Layer("Symbolized Map")
+            sourceLayer3 = arcpy.mapping.Layer("Build And Check Map")
             arcpy.mapping.AddLayer(df, sourceLayer3, "TOP")
 
         arcpy.env.overwriteOutput = False

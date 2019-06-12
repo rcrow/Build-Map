@@ -71,7 +71,7 @@ class CheckUnique(object):
                 return True
             return all(first == rest for rest in iterator)
 
-        #arcpy.env.overwriteOutput = True
+        arcpy.env.overwriteOutput = True
         #arcpy.AddMessage(arcpy.env.scratchGDB)
         #arcpy.AddMessage(arcpy.env.scratchFolder)
         #Inputs
@@ -104,8 +104,10 @@ class CheckUnique(object):
                 arcpy.AddMessage("  "+str(id[0]))
                 Expression = "OBJECTID = {}".format(id[0])
                 arcpy.SelectLayerByAttribute_management("polysLayer", "NEW_SELECTION", Expression)
+
                 arcpy.CopyFeatures_management(in_features="polysLayer",
                                               out_feature_class="SELECTEDpolys")
+
                 arcpy.SelectLayerByLocation_management(in_layer="labelsLayer",
                                                        overlap_type="WITHIN",
                                                        select_features="SELECTEDpolys",
@@ -137,5 +139,5 @@ class CheckUnique(object):
                     #arcpy.AddMessage(id[1])
                     mapUnitList[:]=[] #empties the list
                 cursor.updateRow(id)
-
+        arcpy.env.overwriteOutput = False
         return
